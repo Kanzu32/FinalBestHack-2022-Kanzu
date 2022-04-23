@@ -46,8 +46,10 @@ public class FileController {
 		String type = rawType.substring(rawType.lastIndexOf("/")+1);
 		if (!type.equals(format)) {
 			throw new IOException("Формат полученного файла не совпадает с форматом, указанным в настройках.");
-		} else {
+		} else if (format.equals("json")) {
 			convertService.parseFromJSON(file);
+		} else {
+			convertService.parseFromCSV(file);
 		}
 		return file.getContentType();
 
