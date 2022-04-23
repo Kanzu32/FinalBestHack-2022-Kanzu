@@ -9,7 +9,24 @@ import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -41,7 +58,82 @@ public class ConvertServiceImpl implements ConvertService{
 	}
 
 	@Override
-	public void parseFromXML(MultipartFile file) {
+	public void parseFromXML(MultipartFile file) throws IOException, XMLStreamException {
+		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+		XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(convertMultiPartToFile(file)));
+		Station station = new Station();
+		while (reader.hasNext()) {
+			XMLEvent nextEvent = reader.nextEvent();
+			if (nextEvent.isStartElement()) {
+				StartElement startElement = nextEvent.asStartElement();
+				switch (startElement.getName().getLocalPart()) {
+					case "address":
+						station = new Station();
+						nextEvent = reader.nextEvent();
+						if (!nextEvent.isCharacters()) {
+							station.setAddress("-");
+						} else {
+							station.setAddress(nextEvent.asCharacters().getData());
+						}
+						break;
+					case "latitude":
+						nextEvent = reader.nextEvent();
+						if (!nextEvent.isCharacters()) {
+							station.setLatitude("-");
+						} else {
+							station.setLatitude(nextEvent.asCharacters().getData());
+						}
+
+						break;
+					case "longtitude":
+						nextEvent = reader.nextEvent();
+						if (!nextEvent.isCharacters()) {
+							station.setLongtitude("-");
+						} else {
+							station.setLongtitude(nextEvent.asCharacters().getData());
+						}
+						break;
+					case "name":
+						nextEvent = reader.nextEvent();
+						station.setName(nextEvent.asCharacters().getData());
+						break;
+					case "country":
+						nextEvent = reader.nextEvent();
+						if (!nextEvent.isCharacters()) {
+							station.setCountry("-");
+						} else {
+							station.setCountry(nextEvent.asCharacters().getData());
+						}
+						break;
+					case "phone":
+						nextEvent = reader.nextEvent();
+						if (!nextEvent.isCharacters()) {
+							station.setPhone("-");
+						} else {
+							station.setPhone(nextEvent.asCharacters().getData());
+						}
+						break;
+					case "region":
+						nextEvent = reader.nextEvent();
+						if (!nextEvent.isCharacters()) {
+							station.setRegion("-");
+						} else {
+							station.setRegion(nextEvent.asCharacters().getData());
+						}
+						if (!stationRepository.existsById(station.getName())) {
+							stationRepository.save(station);
+						}
+						break;
+				
+				}
+			}
+//			if (nextEvent.isEndElement()) {
+//				EndElement endElement = nextEvent.asEndElement();
+//				if (endElement.getName().getLocalPart().equals("website")) {
+//					websites.add(website);
+//				}
+//			}
+		}
 	}
 
 	@Override
@@ -67,6 +159,7 @@ public class ConvertServiceImpl implements ConvertService{
 
 	@Override
 	public void parseFromDB(MultipartFile file) {
+
 	}
 
 	private File convertMultiPartToFile(MultipartFile file) throws IOException {
