@@ -38,7 +38,7 @@ public class FileController {
 		} else {
 			throw new IOException("Данный формат не поддерживается.");
 		}
-		return file.getContentType();
+		return "Файл успешно добавлен в базу данных.";
 
 	}
 
