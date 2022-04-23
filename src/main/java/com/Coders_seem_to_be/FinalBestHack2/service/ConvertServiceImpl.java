@@ -1,6 +1,5 @@
 package com.Coders_seem_to_be.FinalBestHack2.service;
 
-import au.com.bytecode.opencsv.CSVParser;
 import au.com.bytecode.opencsv.CSVReader;
 import com.Coders_seem_to_be.FinalBestHack2.entity.Station;
 import com.Coders_seem_to_be.FinalBestHack2.repository.StationRepository;
@@ -9,24 +8,11 @@ import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -49,11 +35,6 @@ public class ConvertServiceImpl implements ConvertService{
 				stationRepository.save(station);
 			}
 		}
-
-	}
-
-	@Override
-	public void parseFromSOAP(MultipartFile file) {
 
 	}
 
@@ -127,12 +108,6 @@ public class ConvertServiceImpl implements ConvertService{
 				
 				}
 			}
-//			if (nextEvent.isEndElement()) {
-//				EndElement endElement = nextEvent.asEndElement();
-//				if (endElement.getName().getLocalPart().equals("website")) {
-//					websites.add(website);
-//				}
-//			}
 		}
 	}
 
@@ -154,11 +129,6 @@ public class ConvertServiceImpl implements ConvertService{
 				stationRepository.save(station);
 			}
 		}
-
-	}
-
-	@Override
-	public void parseFromDB(MultipartFile file) {
 
 	}
 

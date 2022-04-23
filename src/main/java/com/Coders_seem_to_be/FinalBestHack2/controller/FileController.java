@@ -1,11 +1,8 @@
 package com.Coders_seem_to_be.FinalBestHack2.controller;
 
-import com.Coders_seem_to_be.FinalBestHack2.entity.Station;
 import com.Coders_seem_to_be.FinalBestHack2.service.ConvertService;
-import com.Coders_seem_to_be.FinalBestHack2.service.ConvertServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,33 +12,16 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Properties;
 
 @RestController
 public class FileController {
-	public static final String PATH_TO_PROPERTIES = "src/main/resources/application.properties";
 
 	@Value("${in_format}")
 	private String format;
 
 	@Autowired
 	private ConvertService convertService;
-
-	public void getFrom(String path) {
-
-//		if (format.toLowerCase() == "json") {
-//			try {
-//				convertService.parseFromJSON();
-//			} catch (){}
-//		}
-
-
-
-	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException, ParserConfigurationException, SAXException, XMLStreamException {
@@ -53,8 +33,10 @@ public class FileController {
 			convertService.parseFromJSON(file);
 		} else if (format.equals("csv")){
 			convertService.parseFromCSV(file);
-		} else if (format.equals("xml")){
+		} else if (format.equals("xml") || format.equals("soap")){
 			convertService.parseFromXML(file);
+		} else {
+			throw new IOException("Данный формат не поддерживается.");
 		}
 		return file.getContentType();
 
