@@ -2,6 +2,7 @@
 # Java Backend Финал BEST Hack '22
 # Команда "Кодеры вроде бы"
  - ### Овсянников Александр (капитан) (https://vk.com/a.ovsyannikov1)
+ - ### Воротынцев Антон (https://vk.com/ant105)
  - ### Строева Ольга (https://vk.com/id203342031)
  - ### Козявин Максим (https://vk.com/kanzu32)
  - ### Сафронова Анастасия (https://vk.com/astas_konop)
